@@ -40,12 +40,6 @@ div, nav, footer, header {
     box-sizing: border-box;
 }
 
-/* input{  
-	background:none;  
-	outline:none;  
-	border:none;
-} */
-
 header {
     position: fixed;
     /* overflow: hidden; */
@@ -152,18 +146,19 @@ nav a:hover {
 }
 
 .focus {
-    height: 240px;
     background-color: #fff;
 }
 
 .focus img {
     width: 100%;
     height: 200px;
+    vertical-align: bottom;
 }
 
-.focus p {
+.focus .p_1 {
     text-align: center;
-    line-height: 30px;
+    color: #707070;
+    padding: 7px 0px;
 }
 
 /* 头条模块 */
