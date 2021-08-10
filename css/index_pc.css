@@ -1,3 +1,6 @@
+body {
+    margin: 0 auto;
+}
 .w {
     width: 1200px;
     margin: 0 auto;
@@ -8,12 +11,13 @@
     margin: 0 auto;
 }
 
-/* s顶部导航栏 */
-header {
+/* 顶部导航栏 */
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
+    background-color: skyblue;
 }
 
 .header_left img:nth-of-type(1) {
@@ -32,13 +36,17 @@ header {
     height: 25px;
 }
 
-.header_right a {
+.header_right {
+    display: flex;
+}
+
+.header_right li {
     margin-right: 50px;
     font-size: 15px;
     color: #473967;
 }
 
-.header_right a:nth-last-child(1) {
+.header_right li:nth-last-child(1) {
     margin-right: 0;
 }
 
