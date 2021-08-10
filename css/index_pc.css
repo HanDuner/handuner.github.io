@@ -65,9 +65,9 @@ body {
     padding: 10px;
     font-weight: 300;
     /* 字体渐变色效果 */
-    background-image: -webkit-linear-gradient(left, rgb(216, 63, 114), rgb(6, 220, 248));
+    /* background-image: -webkit-linear-gradient(left, rgb(216, 63, 114), rgb(6, 220, 248));
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
 }
 
 .business_bottom {
