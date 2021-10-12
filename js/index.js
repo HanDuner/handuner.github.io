@@ -103,15 +103,17 @@ window.addEventListener('load', function () {
     var goBack = document.querySelector('.goBack');
     var nav = document.querySelector('nav');
     var bodyEle = document.body;
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (window.pageYOffset >= nav.offsetTop) {
             goBack.style.display = 'block';
         } else {
             goBack.style.display = 'none';
         }
     });
-    goBack.addEventListener('click', function() {
+    goBack.addEventListener('click', function () {
         window.scroll(0, 0);
-        
-    })
+
+    });
+
+    
 });
