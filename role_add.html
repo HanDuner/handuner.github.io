@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        #content{
+            width: 300px;
+            border: 1px saddlebrown solid;
+        }
+        div{
+            margin: 10px;
+            padding: 20px;
+        }
+    </style>
+    <link href="js/theme/default/layer.css" rel="stylesheet"/>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/layer.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("button").click(function () {
+                var name=$("#name").val();
+                var index=parent.layer.getFrameIndex(window.name);
+
+                $.ajax({
+                    url:"role.do",
+                    data:{"name":name,"oper":"save"},
+                    dataType:"json",
+                    success:function (data) {
+                        var code=data.code;
+                        if(code=="10000"){
+                            layer.msg("添加成功",{icon:1,time:1000},function () {
+                                parent.layer.close(index);
+                                //子窗体调用父窗体的刷新事件
+                                parent.getRoles();
+                            });
+
+                        }
+                    }
+                });
+            })
+        })
+    </script>
+</head>
+<body>
+    <h4>角色添加</h4>
+    <div id="content">
+        <div>
+            <span>角色名称</span>
+            <span><input id="name" type="text"/></span>
+        </div>
+
+        <div>
+           <button>添加</button>
+        </div>
+    </div>
+</body>
+</html>

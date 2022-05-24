@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body{
+            font-size: 15px;
+
+        }
+        div{
+            padding: 10px;
+        }
+        span{
+            padding: 5px;
+            margin: 5px;
+        }
+        #login{
+            width: 300px;
+        }
+        .info{
+            color: red;
+            display: none;
+        }
+        .green{
+            color: green;
+        }
+    </style>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        $(function () {
+            //失去焦点事件
+            $("#username").blur(function () {
+                var uname=$("#username").val();
+                //ajax检测用户是否已经注册
+                //返回到客户端是复杂数据的话
+                // 格式1：10000-用户可用-zhangsan：（FZ,15880012700），lisi，wangwu
+                // 格式2：（10000@用户可用@@zhangsan，lisi，wangwu@@）
+                // 格式3：{"code":10000,"msg":"用户可用","list":[zhangsan，lisi，wangwu]}
+                //数据交换格式 JSON
+                // JSON语法  对象用花括号、对象成员用逗号分割的键值对组成、数组用方括号
+                $.ajax({
+                    url: "checkUser",
+                    data:{username:uname},
+                    method:"post",
+                    dataType:"json",
+                    success:function (data) {
+                        if(data.code=="10000"){
+                            $("#username_info").removeClass("green");
+                            $("#username_info").show();
+                            $("#username_info").html("用户已存在");
+                        }
+                        else if(data.code=="1"){
+                            $("#username_info").show();
+                            $("#username_info").html("用户可用");
+                            $("#username_info").addClass("green");
+                        }
+                    }
+                });
+            })
+        })
+    </script>
+</head>
+<body>
+    <h2>用户注册</h2>
+    <div id="login">
+        <div>
+            用户名
+            <span>
+                <input id="username" type="text">
+            </span>
+
+        </div>
+        <div class="info" id="username_info">
+
+        </div>
+    </div>
+</body>
+</html>

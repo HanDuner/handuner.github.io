@@ -1,0 +1,99 @@
+<!DOCTYPE web-app PUBLIC
+                "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+                "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+<display-name>Archetype Created Web Application</display-name>
+<!--定义Servlet -->
+<servlet>
+  <servlet-name>helloServlet</servlet-name>
+  <servlet-class>com.dfrz.servlet.HelloServlet</servlet-class>
+</servlet>
+  <!--定义LoginServlet-->
+  <servlet>
+    <servlet-name>loginServlet</servlet-name>
+    <servlet-class>com.dfrz.servlet.LoginServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>doLoginServlet</servlet-name>
+    <servlet-class>com.dfrz.servlet.UserServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>loginAjaxServlet</servlet-name>
+    <servlet-class>com.dfrz.servlet.LoginAjaxServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>checkUserServlet</servlet-name>
+    <servlet-class>com.dfrz.servlet.CheckUserServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>userListServlet</servlet-name>
+    <servlet-class>com.dfrz.servlet.UserListServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>userDeleteServlet</servlet-name>
+    <servlet-class>com.dfrz.servlet.UserDeleteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>RoleServlet</servlet-name>
+    <servlet-class>com.dfrz.servlet.RoleServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>UploadServlet</servlet-name>
+    <servlet-class>com.dfrz.servlet.UploadServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DownloadServlet</servlet-name>
+    <servlet-class>com.dfrz.servlet.DownloadServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>TUserServlet</servlet-name>
+    <servlet-class>com.dfrz.servlet.TUserServlet</servlet-class>
+  </servlet>
+<!--定义Servlet mapping-->
+<servlet-mapping>
+  <servlet-name>helloServlet</servlet-name>
+  <url-pattern>/hello</url-pattern>
+</servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>loginServlet</servlet-name>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>doLoginServlet</servlet-name>
+    <url-pattern>/doLogin</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>loginAjaxServlet</servlet-name>
+    <url-pattern>/loginAjax</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>checkUserServlet</servlet-name>
+    <url-pattern>/checkUser</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>userListServlet</servlet-name>
+    <url-pattern>/userList</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>userDeleteServlet</servlet-name>
+    <url-pattern>/userDelete</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RoleServlet</servlet-name>
+    <url-pattern>/role.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UploadServlet</servlet-name>
+    <url-pattern>/upload.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DownloadServlet</servlet-name>
+    <url-pattern>/download.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TUserServlet</servlet-name>
+    <url-pattern>/tuser.do</url-pattern>
+  </servlet-mapping>
+</web-app>

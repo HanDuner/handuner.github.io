@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body{
+            font-size: 14px;
+        }
+        div{
+            padding: 5px;
+            margin: 5px;
+        }
+        span{
+            margin: 4px;
+            width: 100px;
+            display: inline-block;
+        }
+        .header{
+            background-color: #CCCCCC;
+        }
+        .pagination{
+            margin: 5px;
+            padding: 8px;
+        }
+        .pagination button{
+            margin-right:20px ;
+        }
+        #pagelist button{
+            margin-right:6px ;
+        }
+        .pagelist_active{
+            background-color: #1E9FFF;
+            color: #E9E7E7;
+        }
+        #rolelist{
+            width: 600px;
+            border: 1px darkblue solid;
+        }
+        #rolelist div{
+            border-bottom: 1px darkblue solid;
+        }
+
+    </style>
+    <link href="js/theme/default/layer.css" rel="stylesheet"/>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<!--    <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.5.1/layer.js"></script>-->
+    <script src="js/layer.js"></script>
+    <script type="text/javascript">
+        //当前页码
+        var page_no=1;
+        //每页显示条数
+        var page_size=5;
+        //总记录数
+        var count=0;
+        $(function () {
+            //加载用户角色列表
+            getRoles();
+
+            //点击删除事件
+            $("#rolelist").delegate(".delete","click",function () {
+                var id=$(this).attr("rel");
+                $(this).parent().parent().remove();
+                //同步数据库
+                $.ajax({
+                    url:"role.do",
+                    data:{id:id,oper:"delete"},
+                    dataType:"json",
+                    success:function (data) {
+                        alert("删除成功");
+                    }
+                })
+            })
+            //点击查询事件
+            $(".query").click(function () {
+                getRoles();
+            })
+            //点击上一页
+            $(".pre_page").click(function () {
+                //改变分页的数据
+                page_no--;
+                if(page_no==0){
+                    page_no=1;
+                }
+                page_size=$("#select_pagesize").val();
+                getRoles();
+            })
+            //点击下一页
+            $(".next_page").click(function () {
+                //改变分页的数据
+                page_no++;
+                page_size=$("#select_pagesize").val();
+                getRoles();
+            })
+            //选中每页显示下拉框事件
+            $("#select_pagesize").change(function () {
+                page_size=$("#select_pagesize").val();
+                getRoles();
+            })
+            //页号按钮的点击事件
+            $("#pagelist").delegate(".pagenum","click",function () {
+                page_size=$("#select_pagesize").val();
+                page_no=$(this).html();
+               // $(this).addClass("pagelist_active");
+                getRoles();
+            })
+            //点击添加事件
+            $(".add").click(function () {
+                //跳转改弹窗
+                //window.location.href="role_add.html";
+                layer.open({
+                    type:2,
+                    title:"添加角色",
+                    fix:false,
+                    maxmin:true,
+                    shadeClose:true,
+                    area:['600px','400px'],
+                    content:'role_add.html'
+                })
+            })
+
+            //点击修改事件
+            $("#rolelist").delegate(".update","click",function () {
+                //获取点击行的id
+                var id=$(this).attr("rel");
+                //alert("id="+id);
+                layer.open({
+                    type:2,
+                    title:"修改角色",
+                    fix:false,
+                    maxmin:true,
+                    shadeClose:true,
+                    area:['600px','400px'],
+                    content:'role_update.html?id='+id
+
+                })
+            })
+
+        })
+
+        /**
+         * 获取角色列表
+         */
+        function getRoles(){
+            var name=$("#name").val();
+            $.ajax({
+                url:"role.do",
+                data:{"name":name,"pageNo":page_no,"pageSize":page_size},
+                dataType:"json",
+                success:function (data) {
+                    console.log(1)
+                    $("#rolelist").html("");
+                    $("#pagelist").html("");
+                    var code=data.code;
+                    console.log("------------code="+code)
+                    if(code=="0"){
+                        console.log(2)
+                        var list=data.data;
+                        count=data.count;
+                        //产生数据列表
+                        for(var i=0;i<list.length;i++){
+                            console.log(3)
+                            var r=list[i];
+                            var id=r.id;
+                            var name=r.name;
+                            var content=" <div>\n" +
+                                "        <span>"+id+"</span>\n" +
+                                "        <span>"+name+"</span>\n" +
+                                "        <span>\n" +
+                                "            <button rel='"+id+"' class='update'>修改</button>\n" +
+                                "            <button rel='"+id+"' class='delete'>删除</button>\n" +
+                                "        </span>\n" +
+                                "    </div>";
+                            $("#rolelist").append(content);
+                        }
+                        //产生分页号列表
+                        var pageTotalNum=count/page_size;
+                        for(var i=0;i<pageTotalNum;i++){
+                            $("#pagelist").append("<button class='pagenum'>"+(i+1)+"</button>");
+                        }
+                        $("#pagelist button").eq(page_no-1).addClass("pagelist_active");
+
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<h2>角色列表</h2>
+<div id="search">
+    <input id="name" type="text" placeholder="请输入角色名"/>
+    <span><button class="query">查询</button></span>
+    <span><button class="add">添加</button></span>
+</div>
+<div id="rolelist">
+    <div class="header">
+        <span>ID</span>
+        <span>角色名</span>
+        <span>操作</span>
+    </div>
+</div>
+<!--分页有2种实现方式：
+    1.物理分页（数据库分页）
+    2. 逻辑分页
+-->
+<div class="pagination">
+    <button class="pre_page">上一页</button>
+    <button class="next_page">下一页</button>
+    <select id="select_pagesize">
+        <option value="5" selected>
+            每页5条
+        </option>
+        <option value="10">
+            每页10条
+        </option>
+    </select>
+    <div id="pagelist"></div>
+</div>
+</body>
+</html>
