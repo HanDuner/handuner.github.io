@@ -3,56 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style type="text/css">
-        body{
-            font-size: 13px;
-        }
-        div{
-            margin: 5px;
-        }
-    </style>
-    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            //登陆按钮事件
-            $("button").click(function () {
-                var username=$("#username").val();
-                var password=$("#password").val();
-                // 向服务端发起Ajax请求
-                $.ajax({
-                    url:"loginAjax",
-                    data:{username:username,password:password},
-                    success:function (data) {
-
-                        //alert(data.trim().length)
-                        if(data.trim()=="10000"){
-                            alert("登陆成功")
-                            //js中实现页面跳转
-                            window.location.href="index.html";
-                        }
-                        else{
-                            alert("登陆失败")
-                        }
-                    }
-                })
-            })
-        })
-    </script>
+    <link rel="stylesheet" href="css/login.css">
+    <script src="js/vue.js"></script>
 </head>
 <body>
-    <div>
-        <h3>Ajax版本登陆</h3>
-        <form>
-            <div>
-                <label >用户名</label><input id="username" type="text"/>
+<div class="container">
+    <div class="main">
+        <!-- 整个注册盒子 -->
+        <div class="loginbox">
+            <!-- 左侧的注册盒子 -->
+            <div class="loginbox-in">
+                <div class="userbox">
+                    <span class="iconfont">&#xe8c8;</span>
+                    <input class="user" id="user" v-model="name" placeholder="用户名">
+                </div>
+                <br>
+                <div class="pwdbox">
+                    <span class="iconfont">&#xe60f;</span>
+                    <input class="pwd" id="password" v-model="pwd" type="password" placeholder="密码">
+                </div>
+
+                <br>
+                <div class="btn_info">
+                    <button type="button" class="login_btn" @click="login">登录</button>
+                    <button type="button" class="register_btn" @click="register">注册</button>
+                    <a href="#" class="forget">忘记密码</a>
+                </div>
+
+
             </div>
-            <div>
-                <label >密码</label><input id="password" type="text"/>
+
+            <!-- 右侧的注册盒子 -->
+            <div class="background">
+                <div class="title">Welcome to WH System Management Center</div>
             </div>
-            <div>
-                <button type="button">登陆</button>
-            </div>
-        </form>
+
+        </div>
     </div>
+</div>
+
+<script>
+    var btn_info = new Vue({
+        el: ".btn_info",
+        data: {
+            name:"",
+            pwd:"",
+        },
+        methods: {
+            register: function () {
+                window.location.href = "register.html";
+            },
+            login: function () {
+                alert(123);
+            }
+        }
+    });
+</script>
 </body>
 </html>

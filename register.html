@@ -3,77 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style type="text/css">
-        body{
-            font-size: 15px;
-
-        }
-        div{
-            padding: 10px;
-        }
-        span{
-            padding: 5px;
-            margin: 5px;
-        }
-        #login{
-            width: 300px;
-        }
-        .info{
-            color: red;
-            display: none;
-        }
-        .green{
-            color: green;
-        }
-    </style>
-    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <script>
-        $(function () {
-            //失去焦点事件
-            $("#username").blur(function () {
-                var uname=$("#username").val();
-                //ajax检测用户是否已经注册
-                //返回到客户端是复杂数据的话
-                // 格式1：10000-用户可用-zhangsan：（FZ,15880012700），lisi，wangwu
-                // 格式2：（10000@用户可用@@zhangsan，lisi，wangwu@@）
-                // 格式3：{"code":10000,"msg":"用户可用","list":[zhangsan，lisi，wangwu]}
-                //数据交换格式 JSON
-                // JSON语法  对象用花括号、对象成员用逗号分割的键值对组成、数组用方括号
-                $.ajax({
-                    url: "checkUser",
-                    data:{username:uname},
-                    method:"post",
-                    dataType:"json",
-                    success:function (data) {
-                        if(data.code=="10000"){
-                            $("#username_info").removeClass("green");
-                            $("#username_info").show();
-                            $("#username_info").html("用户已存在");
-                        }
-                        else if(data.code=="1"){
-                            $("#username_info").show();
-                            $("#username_info").html("用户可用");
-                            $("#username_info").addClass("green");
-                        }
-                    }
-                });
-            })
-        })
-    </script>
+    <link rel="stylesheet" href="css/register.css">
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script src="js/vue.js"></script>
 </head>
 <body>
-    <h2>用户注册</h2>
-    <div id="login">
-        <div>
-            用户名
-            <span>
-                <input id="username" type="text">
-            </span>
+<div id="app">
+    <div class="main">
+        <!-- 整个注册盒子 -->
+        <div class="loginbox">
+            <!-- 左侧的注册盒子 -->
+            <div class="loginbox-in">
+                <div class="userbox">
+                    <span class="iconfont">&#xe8c8;</span>
+                    <input class="user" id="user" v-model="name" placeholder="用户名" @blur="u_name">
+                </div>
+                <br>
+                <div class="box_info">
+                    <span class="iconfont">&#xe60f;</span>
+                    <input class="pwd" id="password" v-model="pwd" type="password" placeholder="密码" @blur="u_pwd">
+                </div>
+                <br>
 
-        </div>
-        <div class="info" id="username_info">
+                <div class="box_info">
+                    <span class="iconfont">&#xe60f;</span>
+                    <input class="pwd" id="re_password" v-model="repwd" type="password" placeholder="确认密码"
+                           @blur="u_repwd">
+                </div>
+                <br>
+
+                <div class="box_info">
+                    <span class="iconfont">&#xe94f;</span>
+                    <input class="pwd" id="telephone" v-model="tel" type="text" placeholder="电话号" @blur="u_tel">
+                </div>
+                <br>
+
+                <div class="box_info">
+                    <span class="iconfont">&#xe619;</span>
+                    <input class="input_code" id="ic" v-model="verify_code" type="text" placeholder="验证码">
+                </div>
+                <br>
+
+                <div class="btn_info">
+                    <button type="button" class="code_btn" @click="getCode">获取验证码</button>
+                    <button type="button" class="register_btn" @click="register">注册</button>
+                    <a class="back_login" href="login.html">已有账号，立即登录</a>
+                </div>
+
+            </div>
+
+            <!-- 右侧的注册盒子 -->
+            <div class="background">
+                <div class="title">Welcome to WH System Management Center</div>
+            </div>
 
         </div>
     </div>
+</div>
+
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            name: "",
+            pwd: "",
+            repwd: "",
+            tel: "",
+            input_code: "",
+            user_name_reg:"",
+            user_password_reg:"",
+            user_tel_reg:"",
+            vue_verify_code: "",
+
+        },
+        methods: {
+            u_name: function () {
+                // 用户名正则，4到16位（字母，数字，下划线，减号）
+                this.user_name_reg = /^[a-zA-Z0-9_-]{4,16}$/;
+                if (this.name === "") {
+                    layer.msg("用户名不能为空", {icon: 2, time: 1000});
+                } else if (this.user_name_reg.test(this.name) && this.name !== '') {
+                    layer.msg("添加成功", {icon: 1, time: 1000});
+                } else {
+                    layer.msg("用户名由4到16位组成（字母，数字，下划线，减号）", {icon: 2, time: 3000});
+                }
+            },
+            u_pwd: function () {
+                // 必须包含一个大写，一个小写字母，且长度为8到16位
+                this.user_password_reg = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9~!@&%#_]{8,16}$/;
+                if (this.pwd === "") {
+                    layer.msg("密码不能为空", {icon: 2, time: 1000});
+                } else if (this.user_password_reg.test(this.pwd) && this.pwd !== '') {
+                    layer.msg("添加成功", {icon: 1, time: 1000});
+                } else {
+                    layer.msg("密码必须包含一个大写，一个小写字母，且长度为8到16位", {icon: 2, time: 3000});
+                }
+            },
+            u_repwd: function () {
+                if (this.repwd === "") {
+                    layer.msg("确认密码不能为空", {icon: 2, time: 1000});
+                } else if ((this.pwd === this.repwd) && this.repwd !== '') {
+                    layer.msg("两次密码正确", {icon: 1, time: 1000});
+                } else {
+                    layer.msg("两次密码不一致", {icon: 2, time: 3000});
+                }
+            },
+            u_tel: function () {
+                this.user_tel_reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
+                if (this.tel === "") {
+                    layer.msg("电话号不能为空", {icon: 2, time: 1000});
+                } else if (this.user_tel_reg.test(this.tel) && this.tel !== '') {
+                    layer.msg("添加成功", {icon: 1, time: 1000});
+                } else {
+                    layer.msg("请输入11位正确的电话号", {icon: 2, time: 3000});
+                }
+            },
+            getCode: function () {
+                var vue_this = this;
+                if (this.tel === '') {
+                    layer.msg("电话号不能为空", {icon: 2, time: 1000});
+                } else if (this.tel !== "" && this.tel !== null) {
+                    var tel = this.tel;
+                    $.ajax({
+                        url: "register.do",
+                        data: {tel: tel, oper: "getCode"},
+                        dataType: "json",
+                        success: function (data) {
+                            layer.msg("验证码发送成功", {icon: 1, time: 1000});
+                            // 随机生成的验证码
+                            var verify_code = data.verifyCode;
+                            vue_this.vue_verify_code = verify_code;
+
+                            $(".input_code").blur(function () {
+                                vue_this.input_code = $(".input_code").val();
+                                if (vue_this.input_code === "") {
+                                    layer.msg("验证码不能为空", {icon: 2, time: 1000});
+                                } else if (vue_this.input_code === verify_code) {
+                                    layer.msg("验证码检验通过", {icon: 1, time: 1000});
+                                } else {
+                                    layer.msg("验证码检验未通过", {icon: 2, time: 1000});
+                                }
+                            })
+                        }
+                    });
+
+                }
+
+                // var verify_code = this.verify_code;
+
+
+            },
+
+            register: function () {
+                var name = this.name;
+                var pwd = this.pwd;
+                var repwd = this.repwd;
+                var tel = this.tel;
+                var code = this.code;
+                if (this.name === "" || this.pwd === "" || this.repwd === "" || this.tel === "" || this.verify_code === "") {
+                    layer.msg("请完成选项填写，每项均为必填", {icon: 2, time: 1000});
+                } else if ((this.user_name_reg.test(this.name))&&(this.user_password_reg.test(this.pwd))&&(this.pwd === this.repwd)&&(this.user_tel_reg.test(this.tel))&&(this.input_code === this.vue_verify_code)) {
+                    layer.msg("注册成功", {icon: 1, time: 1000});
+                } else {
+                    layer.msg("请按规则填写每一项信息", {icon: 2, time: 1000});
+                }
+                $.ajax({
+                    url: "register.do",
+                    data: {name: name, pwd: pwd, repwd: repwd, tel: tel, code: code, oper: "register"},
+                    dataType: "json",
+                    success: function (data) {
+
+                    }
+                });
+
+            }
+        }
+    });
+
+</script>
 </body>
 </html>
